@@ -1,0 +1,235 @@
+MIB-KITSUNE DEFINITIONS ::= BEGIN
+IMPORTS
+MODULE-IDENTITY, OBJECT-TYPE, Integer32, mib-2 FROM SNMPv2-SMI;
+
+mibIEEE80222 MODULE-IDENTITY
+	LAST-UPDATED "200602020000Z"
+	ORGANIZATION "UFRGS"
+	CONTACT-INFO "lbondan@inf.ufrgs.br"
+	DESCRIPTION "An extended implementation of IEEE 802.22 MIB for cognitive radio networks"
+	::= { mib-2 1300 }
+
+-- ********************************* DEV *********************************
+wranDevMib	OBJECT IDENTIFIER ::= { mibIEEE80222 1 }
+-- ********************************* BS **********************************
+wranIfBsMib	OBJECT IDENTIFIER ::= { mibIEEE80222 2 }
+-- **************************** BS Management ****************************
+wranIfBsSfMgmt	OBJECT IDENTIFIER ::= { mibIEEE80222 3 }
+-- ********************************* CPE *********************************
+wranIfCpeMib	OBJECT IDENTIFIER ::= { mibIEEE80222 4 }
+-- ********************************* SM **********************************
+wranIfSmMib	OBJECT IDENTIFIER ::= { mibIEEE80222 5 }
+
+	wranIfSmSsaChAvailabilityCheckTime OBJECT-TYPE
+		SYNTAX OCTET STRING
+		ACCESS read-write
+		STATUS current
+		DESCRIPTION "Sensing window to check if a channel is vacant or occupied."
+		::= {wranIfSmMib 1}
+		
+	wranIfSmSsaNonOccupancyPeriod OBJECT-TYPE
+		SYNTAX OCTET STRING
+		ACCESS read-write
+		STATUS current
+		DESCRIPTION "Period in which the CR cannot perform transmissions."
+		::= {wranIfSmMib 2}
+		
+	wranIfSmSsaChannelOpeningTxTime OBJECT-TYPE
+		SYNTAX OCTET STRING
+		ACCESS read-write
+		STATUS current
+		DESCRIPTION "Maximum transmission time"
+		::= {wranIfSmMib 3}
+
+	wranIfSmManagedChannel OBJECT-TYPE
+		SYNTAX OCTET STRING
+		ACCESS read-write
+		STATUS current
+		DESCRIPTION "Managed channel identification."
+		::= {wranIfSmMib 4}
+		
+	wranIfSmManagedChannelStatus OBJECT-TYPE
+		SYNTAX OCTET STRING
+		ACCESS read-only
+		STATUS current
+		DESCRIPTION "Status of the managed channels that can be used in the CR network."
+		::= {wranIfSmMib 5}
+		
+	wranIfSmWranOccupiedChannelSet OBJECT-TYPE
+		SYNTAX OCTET STRING
+		ACCESS read-only
+		STATUS current
+		DESCRIPTION "Channels evaluated as occupied during the spectrum sensing."
+		::= {wranIfSmMib 6}
+
+-- ********************************* SSA *********************************
+wranIfSsaMib OBJECT IDENTIFIER ::= { mibIEEE80222 6 }
+
+	wranIfSsaSensingChannels OBJECT-TYPE
+		SYNTAX OCTET STRING
+		ACCESS read-write
+		STATUS current
+		DESCRIPTION "Channel that sensing has been conducted on, or not
+		conducted on if in IPC-UPD."
+		::= {wranIfSsaMib 1}
+		
+	wranIfSsaTimeLastSensing OBJECT-TYPE
+		SYNTAX OCTET STRING
+		ACCESS read-only
+		STATUS current
+		DESCRIPTION "Last time that each channel was sensed."
+		::= {wranIfSsaMib 2}
+		
+	wranIfSsaSensingPathRssi OBJECT-TYPE
+		SYNTAX OCTET STRING
+		ACCESS read-only
+		STATUS current
+		DESCRIPTION "RSSI on channel."
+		::= {wranIfSsaMib 3}
+
+-- ********************************* Database *********************************
+wranIfDatabaseServiceMib	OBJECT IDENTIFIER ::= { mibIEEE80222 7 }
+
+-- *************************** Decision and Sharing ***************************
+ExtendedMib	OBJECT IDENTIFIER ::= { mibIEEE80222 8 }
+
+	DecisionOperatingChannel OBJECT-TYPE
+	    SYNTAX OCTET STRING
+	    ACCESS read-only
+	    STATUS mandatory
+	    DESCRIPTION "Operating Channel selected by the Decision Function"
+	    ::= {ExtendedMib 1}
+
+	DecisionBackupChannel OBJECT-TYPE
+	    SYNTAX OCTET STRING
+	    ACCESS read-only
+	    STATUS mandatory
+	    DESCRIPTION "Backup Channel selected by the Decision Function"
+	    ::= {ExtendedMib 2}
+
+	DecisionCandidateChannels OBJECT-TYPE
+	    SYNTAX OCTET STRING
+	    ACCESS read-only
+	    STATUS mandatory
+	    DESCRIPTION "Candidate Channels selected by the Decision Function"
+	    ::= {ExtendedMib 3}
+
+	DecisionGamaWeight OBJECT-TYPE
+	    SYNTAX OCTET STRING
+	    ACCESS read-write
+	    STATUS mandatory
+	    DESCRIPTION "Gamma Weight to be used by the Decision Function"
+	    ::= {ExtendedMib 4}
+
+	DecisionRssiMinValue OBJECT-TYPE
+	    SYNTAX OCTET STRING
+	    ACCESS read-write
+	    STATUS mandatory
+	    DESCRIPTION "Minimum RSSI level to the RSSI corresponding table"
+	    ::= {ExtendedMib 5}
+
+	DecisionRssiMaxValue OBJECT-TYPE
+	    SYNTAX OCTET STRING
+	    ACCESS read-write
+	    STATUS mandatory
+	    DESCRIPTION "Maximum RSSI level to the RSSI corresponding table"
+	    ::= {ExtendedMib 6}
+
+	DecisionUplinkThroughput OBJECT-TYPE
+		SYNTAX OCTET STRING 
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"The max uplink Throughput obtained in Mbits per second"
+		::= { ExtendedMib 7}
+		
+	DecisionDownlinkThroughput OBJECT-TYPE
+		SYNTAX OCTET STRING 
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"The max downlink Throughput obtained in Mbits per second"
+		::= { ExtendedMib 8}
+
+	SharingStartTime OBJECT-TYPE
+	    SYNTAX OCTET STRING
+	    ACCESS read-only
+	    STATUS mandatory
+	    DESCRIPTION "Timestamp when the CPE started the sharing over the operating channel."
+	    ::= {ExtendedMib 9}
+
+	SharingStopTime OBJECT-TYPE
+	    SYNTAX OCTET STRING
+	    ACCESS read-only
+	    STATUS mandatory
+	    DESCRIPTION "Timestamp when the CPE stoped the sharing over the operating channel."
+	    ::= {ExtendedMib 10}
+
+	SharingAllocatedBand OBJECT-TYPE
+	    SYNTAX OCTET STRING
+	    ACCESS read-only
+	    STATUS mandatory
+	    DESCRIPTION "Channel band allocated to transmit in the last transmission."
+	    ::= {ExtendedMib 11}
+
+-- ******************************* Generic ***********************************
+-- ********** Class to be used by any function for any purpose ***************
+wranIfGenericMib    OBJECT IDENTIFIER ::= { mibIEEE80222 9 }
+
+	wranIfGenericObj1 OBJECT-TYPE
+	    SYNTAX OCTET STRING
+	    ACCESS read-write
+	    STATUS mandatory
+	    DESCRIPTION "Generic object one"
+	    ::= {wranIfGenericMib 1}
+	
+	wranIfGenericObj2 OBJECT-TYPE
+	    SYNTAX OCTET STRING
+	    ACCESS read-write
+	    STATUS mandatory
+	    DESCRIPTION "Generic object two"
+	    ::= {wranIfGenericMib 2}
+	
+	wranIfGenericObj3 OBJECT-TYPE
+	    SYNTAX OCTET STRING
+	    ACCESS read-write
+	    STATUS mandatory
+	    DESCRIPTION "Generic object three"
+	    ::= {wranIfGenericMib 3}
+	
+	wranIfGenericObj4 OBJECT-TYPE
+	    SYNTAX OCTET STRING
+	    ACCESS read-write
+	    STATUS mandatory
+	    DESCRIPTION "Generic object four"
+	    ::= {wranIfGenericMib 4}
+	
+	wranIfGenericObj5 OBJECT-TYPE
+	    SYNTAX OCTET STRING
+	    ACCESS read-write
+	    STATUS mandatory
+	    DESCRIPTION "Generic object five"
+	    ::= {wranIfGenericMib 5}
+	
+	wranIfGenericObj6 OBJECT-TYPE
+	    SYNTAX OCTET STRING
+	    ACCESS read-write
+	    STATUS mandatory
+	    DESCRIPTION "Generic object six"
+	    ::= {wranIfGenericMib 6}
+	
+	wranIfGenericObj7 OBJECT-TYPE
+	    SYNTAX OCTET STRING
+	    ACCESS read-write
+	    STATUS mandatory
+	    DESCRIPTION "Generic object seven"
+	    ::= {wranIfGenericMib 7}
+	
+	wranIfGenericObj8 OBJECT-TYPE
+	    SYNTAX OCTET STRING
+	    ACCESS read-write
+	    STATUS mandatory
+	    DESCRIPTION "Generic object eight"
+	    ::= {wranIfGenericMib 8}
+
+END
